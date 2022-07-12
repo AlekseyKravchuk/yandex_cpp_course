@@ -1,59 +1,108 @@
-#include <iostream>
-#include <vector>
-#include <string>
-#include <set>
 #include <algorithm>
+#include <iostream>
+#include <set>
+#include <string>
+#include <utility>
+#include <vector>
 #include <sstream>
-#include <tuple>
 
 
 using namespace std;
 
 
-tuple<int, vector<string>> CalculateSimilarity(vector<string> first, vector<string> second) {
-    // верните размер пересечения множеств слов first и second
-    set<string> set_1(first.begin(), first.end());
-    set<string> set_2(second.begin(), second.end());
-    vector<string> common_data;
-    set_intersection(set_1.begin(), set_1.end(),
-                    set_2.begin(), set_2.end(),
-                    std::back_inserter(common_data));
-    
-    return make_tuple(common_data.size(), common_data);
+string ReadLine() {
+    string s;
+    getline(cin, s);
+    return s;
 }
 
-// SplitIntoWords разбивает строку text на слова и возвращает их в виде вектора
-// Слово - последовательность непробельных символов,
-// разделённых одним или более пробелов.
-vector<string> SplitIntoWords(string text) {
+int ReadLineWithNumber() {
+    int result = 0;
+    cin >> result;
+    ReadLine();
+    return result;
+}
+
+const vector<string> SplitIntoWords(const string& text) {
+    std::istringstream iss(text);
     vector<string> words;
     string word;
-    istringstream line(text);
-    while(line >> word) {
+
+    while (iss >> word) {
         words.push_back(word);
     }
-    
+
     return words;
 }
 
-int main() {
-    string query, description;
-
-    getline(cin, query);
-    getline(cin, description);
-
-    int n;
-    vector<string> v;
-
-    tie(n, v) = CalculateSimilarity(SplitIntoWords(query), SplitIntoWords(description));
-
-    cout << n << endl;
-    for (auto it = v.begin(); it != v.end(); ++it) {
-       if (it != v.end() - 1) {
-        cout << *it << ", ";
-       } else {
-        cout << *it << endl;
-       }
+set<string> ParseStopWords(const string& text) {
+    set<string> stop_words;
+    for (const string& word : SplitIntoWords(text)) {
+        stop_words.insert(word);
     }
-    
+    return stop_words;
+}
+
+vector<string> SplitIntoWordsNoStop(const string& text, const set<string>& stop_words) {
+    vector<string> words;
+    // проходим по всем словам из текста и проверяем, что их нет в списке стоп-слов
+    for (const string& word : SplitIntoWords(text)) {
+        if (stop_words.count(word) == 0) {
+            words.push_back(word);
+        }
+    }
+    // вернём результат без стоп-слов
+    return words;
+}
+
+void AddDocument(vector<vector<string>>& documents,
+                 const set<string>& stop_words,
+                 const string& document) {
+    const vector<string> words = SplitIntoWordsNoStop(document, stop_words);
+    documents.push_back(words);
+}
+
+// Разбирает text на слова и возвращает только те из них, которые не входят в stop_words
+set<string> ParseQuery(const string& text, const set<string>& stop_words) {
+    set<string> query_words;
+
+    // Напишите код функции
+
+    return query_words;
+}
+
+// Возвращает true, если среди слов документа (document_words)
+// встречаются слова поискового запроса query_words
+bool MatchDocument(const vector<string>& document_words, const set<string>& query_words) {
+    // Напишите код функции
+
+    return false;
+}
+
+// Возвращает массив id документов, подходящих под запрос query
+// Стоп-слова исключаются из поиска
+vector<int> FindDocuments(const vector<vector<string>>& documents, const set<string>& stop_words,
+                          const string& query) {
+    vector<int> matched_documents;
+
+    // Напишите код функции
+    // Воспользуйте вспомогательными функциями ParseQuery, MatchDocument
+    // В качестве id документа используйте его индекс в массиве documents
+
+    return matched_documents;
+}
+
+int main() {
+    const set<string> stop_words = ParseStopWords(ReadLine());
+    const int document_count = stoi(ReadLine());
+    vector<vector<string>> documents;  // documents DB
+
+    for (int document_id = 0; document_id < document_count; ++document_id) {
+        AddDocument(documents, stop_words, ReadLine());
+    }
+
+    const string query = ReadLine();
+    for (const int document_id : FindDocuments(documents, stop_words, query)) {
+        cout << "{ document_id = "s << document_id << " }"s << endl;
+    }
 }
