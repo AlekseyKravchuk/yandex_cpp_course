@@ -25,7 +25,7 @@ vector<string> SplitIntoWords(const string &text) {
     return words;
 }
 
-set<string> ParseStopWords(const string &text) {
+set<string> ParseStopWordsIntoSet(const string &text) {
     set<string> stop_words;
     for (const string &word : SplitIntoWords(text)) {
         stop_words.insert(word);
@@ -47,7 +47,7 @@ int main() {
     // Read stop words
     string stop_words_joined;
     getline(cin, stop_words_joined);
-    set<string> stop_words = ParseStopWords(stop_words_joined);
+    set<string> stop_words = ParseStopWordsIntoSet(stop_words_joined);
 
     // Read query
     string query;

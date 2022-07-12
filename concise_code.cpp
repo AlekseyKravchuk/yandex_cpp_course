@@ -1,8 +1,8 @@
 #include <iostream>
 #include <set>
+#include <sstream>
 #include <string>
 #include <vector>
-#include <sstream>
 
 using namespace std;
 
@@ -26,7 +26,6 @@ using namespace std;
     return words;
 } */
 
-
 const vector<string> SplitIntoWords(const string& text) {
     std::istringstream iss(text);
     vector<string> words;
@@ -39,7 +38,7 @@ const vector<string> SplitIntoWords(const string& text) {
     return words;
 }
 
-set<string> ParseStopWords(const string& text) {
+set<string> ParseStopWordsIntoSet(const string& text) {
     set<string> stop_words;
     for (const string& word : SplitIntoWords(text)) {
         stop_words.insert(word);
@@ -70,7 +69,7 @@ void PrintQueryWordsExcludingStopWords(const vector<string>& query_words) {
 }
 
 int main() {
-    const set<string> stop_words = ParseStopWords(ReadLine());
+    const set<string> stop_words = ParseStopWordsIntoSet(ReadLine());
     const vector<string> query_words = ParseQuery(ReadLine(), stop_words);
     PrintQueryWordsExcludingStopWords(query_words);
 }
