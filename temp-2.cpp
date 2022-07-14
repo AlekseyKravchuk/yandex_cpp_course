@@ -1,37 +1,15 @@
 #include <iostream>
 #include <string>
-#include <vector>
 
 using namespace std;
 
-vector<string> SplitIntoWords(const string &text) {
-    vector<string> words;
-    string word;
-    for (const char c : text) {
-        if (c == ' ') {
-            if (!word.empty()) {
-                words.push_back(word);
-                word.clear();
-            }
-        } else {
-            word += c;
-        }
-    }
-    if (!word.empty()) {
-        words.push_back(word);
-    }
-
-    return words;
-}
-
 int main() {
-    string s = "test search query"s;
-    vector<string> v;
+    // char c1 = 'a';
+    // char c2 = 'b';
+    string c1 = "abcd";
+    string c2 = "fghi";
 
-    v = SplitIntoWords(s);
-    for (const string &word : v) {
-        cout << "[" << word << "]"
-             << " ";
-    }
-    cout << endl;
+    cout << (c1 > c2) << endl;
+
+    return 0;
 }

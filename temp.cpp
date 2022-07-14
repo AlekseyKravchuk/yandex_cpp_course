@@ -2,38 +2,49 @@
 #include <map>
 #include <set>
 #include <string>
+#include <utility>
 
 using namespace std;
 
+// Comparison function for sorting the set by DECREASING order of its pair's second value
+struct compStruct {
+    template <typename T>
+
+    // Comparator function
+    bool operator()(const T& lhs, const T& rhs) const {
+        if (lhs.second != rhs.second) {
+            return lhs.second > rhs.second;
+        }
+        return lhs.first < rhs.first;
+    }
+};
+
+// Function to sort the map according to value in a (key-value) pairs
+void SortMap(map<string, int>& M) {
+    // Declare set of pairs and insert pairs according to the comparator function compStruct()
+    set<pair<string, int>, compStruct> S(M.begin(), M.end());
+    // set<pair<string, int>> S(M.begin(), M.end());
+
+    // Print the sorted value
+    for (auto& it : S) {
+        cout << it.first << ' '
+             << it.second << endl;
+    }
+}
+
+// Driver Code
 int main() {
-    // Get the set
-    int arr[] = {14, 12, 15, 11, 10};
+    // Declare Map
+    map<string, int> M;
 
-    // initializes the set from an array
-    set<int> s(arr, arr + sizeof(arr) / sizeof(arr[0]));
+    // Given Map
+    M = {{"Avatar", 1},
+         {"GfG", 3},
+         {"To", 2},
+         {"Avaaar", 1},
+         {"Welcome", 2}};
 
-    // declare iterator on set
-    set<int>::iterator it;
-
-    cout << "Elements of Set in normal order:\n";
-
-    // prints all elements in normal order
-    // using begin() and end() methods
-    for (it = s.begin(); it != s.end(); it++)
-        cout << *it << " ";
-
-    // declare reverse_iterator on set
-    set<int>::reverse_iterator rit;
-
-    cout << "\nElements of Set in reverse order:\n";
-
-    // prints all elements in reverse order
-    // using rbegin() and rend() methods
-    for (rit = s.rbegin(); rit != s.rend(); rit++)
-        cout << *rit << " ";
-
-    // set<int>::reverse_iterator rit = s.rbegin();
-    // cout << *rit << endl;
-
+    // Function Call
+    SortMap(M);
     return 0;
 }
