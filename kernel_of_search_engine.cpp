@@ -62,7 +62,8 @@ void AddDocument(vector<vector<string>>& documents,
 }
 
 // Parses "text" into words and returns just those that don't present in "stop_words" set.
-set<string> ParseQuery(const string& text, const set<string>& stop_words) {
+set<string> ParseQuery(const string& text,
+                       const set<string>& stop_words) {
     set<string> query_words;
     istringstream iss(text);
     string word;
@@ -77,7 +78,8 @@ set<string> ParseQuery(const string& text, const set<string>& stop_words) {
 }
 
 // Returns "true" if "document_words" vector contains strings from "query_words" set.
-bool MatchDocument(const vector<string>& document_words, const set<string>& query_words) {
+bool MatchDocument(const pair<int, vector<string>>& document_words,
+                   const set<string>& query_words) {
     for (const auto& word : document_words) {
         if (query_words.count(word) == 1) {
             return true;
@@ -87,11 +89,15 @@ bool MatchDocument(const vector<string>& document_words, const set<string>& quer
     return false;
 }
 
-// Returns array of id of the documents containing words from "query". Stop-words are excluded from the search.
-vector<int> FindDocuments(const vector<vector<string>>& documents,
-                          const set<string>& stop_words,
-                          const string& query) {
-    vector<int> relevant_docs_ids;
+// TODO!: переписать функцию
+// Returns array of pairs: {document_id: int, relevance: int}
+// id of the documents containing words from "query". Stop-words are excluded from the search.
+vector<pair<int, int>> FindDocuments(const vector<pair<int, vector<string>>>& documents,
+                                     const set<string>& stop_words,
+                                     const string& query) {
+    int doc_id;
+
+
     const set<string> queryNoStopWords = ParseQuery(query, stop_words);
 
     for (size_t i = 0; i < documents.size(); ++i) {
