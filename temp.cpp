@@ -1,24 +1,48 @@
 #include <iostream>
-#include <map>
 #include <string>
+#include <map>
 #include <utility>
+#include <vector>
+#include <sstream>
+#include <algorithm>
+#include <cctype>
+// #include <string_view>
 
-using namespace std;
+using std::cout; using std::cin; using std::endl;
+using std::string; using std::vector; using std::pair;
+using namespace std::string_literals;
+using std::remove_if;
+
+const vector<string> SplitIntoWords(const string& text) {
+    std::istringstream iss(text);
+    vector<string> words;
+    string word;
+
+    while (iss >> word) {
+        word.erase(remove_if(word.begin(), word.end(), ispunct), word.end());
+        words.push_back(word);
+    }
+
+    return words;
+}
+
+void PrintVector(const vector<string>& v) {
+    for (const auto& word: v) {
+        cout << "[" << word << "]" << " ";
+    }
+    cout << endl;
+}
 
 int main() {
-    map<string, int> legs_count = {{"dog"s, 4}, {"ostrich"s, 2}};
+    vector<pair<int, vector<string>>> docs_db;
+    string s1 = "first document."s;
+    string s2 = "second document."s;
+    docs_db.emplace_back(0, SplitIntoWords(s1));
+    docs_db.emplace_back(1, SplitIntoWords(s2));
 
-    // Аналогично for (const pair<string, int>& entry : legs_count)
-    /*     for (const auto& entry : legs_count) {
-            cout << entry.first << " has " << entry.second << " legs." << endl;
-        } */
-
-    // Пару из двух значений можно создать на лету фигурными скобками, а затем вставить в словарь методом insert() как ключ и значение:
-    const auto [octopus_iterator, success_flag] = legs_count.insert({"octopus"s, 8});
-
-    cout << success_flag << endl;
-    for (const auto& [animal, number_of_legs] : legs_count) {
-        cout << animal << " has " << number_of_legs << " legs." << endl;
+    for (const auto& doc: docs_db) {
+        cout << doc.first << ": ";
+        PrintVector(doc.second);
     }
 
     return 0;
